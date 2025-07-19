@@ -1,0 +1,1126 @@
+<html>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5' name='viewport'/>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'/>
+<title>SEMANGAT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+<script src="https://kit.fontawesome.com/4f3ce16e3e.js" crossorigin="anonymous"></script>
+
+<body>
+<!-- Audio element for background music -->
+<audio id="backgroundAudio" loop preload="auto" style="display: none;">
+    <source src="pizza.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+<!-- Audio control button -->
+<div id="audioControl" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.3);">
+    <i id="audioIcon" class="fas fa-volume-up" style="color: white; font-size: 20px;"></i>
+</div>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, 
+        #667eea 0%, 
+        #764ba2 25%, 
+        #f093fb 50%, 
+        #f5576c 75%, 
+        #4facfe 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Audio control hover effect */
+#audioControl:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Floating particles */
+.particle {
+    position: fixed;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    z-index: 0;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh) scale(0);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(90vh) scale(1);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(10vh) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(0vh) scale(0);
+    }
+}
+
+#bodyblur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+#konten {
+    position: relative;
+    top: 100vh;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+    transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+#fotoloveu {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px;
+    backdrop-filter: blur(10px);
+}
+
+#animasi {
+    border-radius: 50%;
+    box-shadow: 
+        0 0 30px rgba(255, 255, 255, 0.3),
+        0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 100%;
+    height: auto;
+    filter: brightness(1.1) contrast(1.05);
+}
+
+.degdeg {
+    animation: elegantPulse 2s ease-in-out infinite;
+}
+
+@keyframes elegantPulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 
+            0 0 30px rgba(255, 255, 255, 0.3),
+            0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    50% { 
+        transform: scale(1.08);
+        box-shadow: 
+            0 0 50px rgba(255, 255, 255, 0.5),
+            0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.catatan {
+    color: white;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 30px 0;
+    line-height: 1.8;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+#text {
+    display: block;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    font-family: 'Inter', sans-serif;
+}
+
+#penutup {
+    display: block;
+    font-weight: 600;
+    font-size: 2.2rem;
+    color: #ffffff;
+    font-family: 'Caveat', cursive;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    animation: textGlow 3s ease-in-out infinite;
+}
+
+@keyframes textGlow {
+    0%, 100% {
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        text-shadow: 
+            0 4px 20px rgba(0, 0, 0, 0.3),
+            0 0 30px rgba(255, 255, 255, 0.4);
+    }
+}
+
+#tomAksi {
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 40px;
+}
+
+.button {
+    display: inline-block;
+    padding: 16px 32px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+.button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s;
+}
+
+.button:hover::before {
+    left: 100%;
+}
+
+.button:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.2),
+        0 0 20px rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.button:active {
+    transform: translateY(-1px);
+}
+
+/* Enhanced hearts animation */
+.fa-heart {
+    position: fixed;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 18px;
+    animation: elegantFall linear infinite;
+    z-index: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes elegantFall {
+    0% {
+        top: -10vh;
+        transform: translateX(0px) rotateZ(0deg) scale(0);
+        opacity: 0;
+    }
+    10% {
+        transform: translateX(20px) rotateZ(36deg) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(60px) rotateZ(180deg) scale(1.2);
+        opacity: 0.8;
+    }
+    90% {
+        transform: translateX(-20px) rotateZ(324deg) scale(0.8);
+        opacity: 0.3;
+    }
+    100% {
+        top: 100vh;
+        transform: translateX(-60px) rotateZ(360deg) scale(0);
+        opacity: 0;
+    }
+}
+
+/* SweetAlert2 custom styling */
+.swal2-popup {
+    font-size: 1.1rem !important;
+    border-radius: 25px !important;
+    backdrop-filter: blur(20px) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+.swal2-title {
+    font-family: 'Inter', cursive !important;
+    font-size: 1.8rem !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+}
+
+.swal2-confirm, .swal2-cancel {
+    border-radius: 25px !important;
+    font-weight: 500 !important;
+    font-family: 'Inter', sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+}
+
+.swal2-confirm:hover, .swal2-cancel:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Moving cancel button animation */
+.swal2-cancel.moving {
+    animation: moveButton 0.5s ease-in-out !important;
+    pointer-events: none !important;
+}
+
+@keyframes moveButton {
+    0% {
+        transform: translateX(0) translateY(0) scale(1);
+    }
+    25% {
+        transform: translateX(var(--move-x, 50px)) translateY(var(--move-y, -30px)) scale(0.9);
+    }
+    50% {
+        transform: translateX(var(--move-x, 50px)) translateY(var(--move-y, -30px)) scale(1.1);
+    }
+    75% {
+        transform: translateX(var(--move-x, 50px)) translateY(var(--move-y, -30px)) scale(0.95);
+    }
+    100% {
+        transform: translateX(var(--move-x, 50px)) translateY(var(--move-y, -30px)) scale(1);
+    }
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+
+        #audioControl {
+        width: 40px;
+        height: 40px;
+        top: 15px;
+        right: 15px;
+    }
+    
+    #audioIcon {
+        font-size: 16px;
+    }
+    
+    #konten {
+        padding: 20px 15px;
+        max-width: 95%;
+        border-radius: 20px;
+    }
+    
+    #animasi {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .catatan {
+        font-size: 1rem;
+        margin: 20px 0;
+        padding: 0 10px;
+    }
+    
+    #text {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+    
+    #penutup {
+        font-size: 1.8rem !important;
+    }
+    
+    .button {
+        padding: 14px 28px;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .swal2-popup {
+        font-size: 1rem !important;
+        width: 85% !important;
+        margin: 10px;
+        border-radius: 20px !important;
+    }
+    
+    .swal2-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .swal2-image {
+        width: 130px !important;
+        height: 130px !important;
+        border-radius: 15px !important;
+    }
+    
+    .fa-heart {
+        font-size: 14px;
+    }
+    
+    #fotoloveu {
+        margin: 20px 0 0 0 !important;
+    }
+
+    .particle {
+        width: 4px;
+        height: 4px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    
+    #konten {
+        padding: 15px 10px;
+    }
+    
+    #animasi {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .catatan {
+        font-size: 0.9rem;
+        margin: 15px 0;
+    }
+    
+    #text {
+        font-size: 0.9rem;
+    }
+    
+    #penutup {
+        font-size: 1.6rem !important;
+    }
+    
+    .button {
+        padding: 12px 24px;
+        font-size: 0.8rem;
+    }
+    
+    .swal2-popup {
+        font-size: 0.9rem !important;
+        width: 90% !important;
+    }
+    
+    .swal2-title {
+        font-size: 1.3rem !important;
+    }
+    
+    .swal2-image {
+        width: 110px !important;
+        height: 110px !important;
+    }
+    
+    .fa-heart {
+        font-size: 12px;
+    }
+
+    .particle {
+        width: 3px;
+        height: 3px;
+    }
+}
+
+/* Large screens */
+@media screen and (min-width: 1200px) {
+    #konten {
+        max-width: 600px;
+        padding: 50px 30px;
+    }
+    
+    #animasi {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .catatan {
+        font-size: 1.2rem;
+        margin: 35px 0;
+    }
+    
+    #text {
+        font-size: 1.2rem;
+    }
+    
+    #penutup {
+        font-size: 2.5rem !important;
+    }
+    
+    .button {
+        padding: 18px 36px;
+        font-size: 1rem;
+    }
+    
+    .fa-heart {
+        font-size: 20px;
+    }
+
+    .particle {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* Portrait orientation specific adjustments */
+@media screen and (orientation: portrait) and (max-width: 768px) {
+    #konten {
+        justify-content: flex-start;
+        padding-top: 40px;
+    }
+}
+
+/* Landscape orientation specific adjustments */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    #konten {
+        padding: 15px;
+        min-height: auto;
+    }
+    
+    #fotoloveu {
+        margin: 10px 0 0 0 !important;
+        height: 100px !important;
+    }
+    
+    #animasi {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .catatan {
+        font-size: 0.9rem;
+        margin: 10px 0;
+    }
+
+    .particle {
+        width: 3px;
+        height: 3px;
+    }
+}
+</style>
+
+<div id="bodyblur"></div>
+
+<div id="konten">
+    <div id="fotoloveu">
+        <div class="image">
+            <img src="1.gif" id="animasi" alt="Animation"/>
+        </div>
+    </div>
+
+    <p class='catatan sek' data-text='♥' id='koteks'>
+        <span id="text"></span>
+        <span id="penutup"></span>
+    </p>
+
+    <div id="tomAksi">
+        <a class='button' onClick='bukaWa();'>
+            <span>TAP TAP INI COBA</span>
+        </a>
+    </div>
+</div>
+
+<script>
+var i=0,text;
+text = "One day all of your dreams will come true. You will get through it. Keep Going. You're Worth it. The world is a kinder place because you are in it";
+var u=0,penutup;
+penutup = "SEMANGAT";
+var cancelClickCount = 0; // Track how many times cancel button is clicked
+var currentStep = 1; // Track current dialog step
+var buttonMovePositions = [
+    {x: 50, y: -30},
+    {x: -60, y: 20},
+    {x: 80, y: -50},
+    {x: -40, y: 40},
+    {x: 70, y: 10},
+    {x: -80, y: -20},
+    {x: 30, y: 60},
+    {x: -50, y: -40},
+    {x: 90, y: 30},
+    {x: -70, y: 50}
+];
+
+// Audio control variables
+var audioElement = null;
+var isAudioPlaying = false;
+var audioIcon = null;
+var audioControl = null;
+
+// Initialize audio on page load
+window.addEventListener('DOMContentLoaded', function() {
+    audioElement = document.getElementById('backgroundAudio');
+    audioIcon = document.getElementById('audioIcon');
+    audioControl = document.getElementById('audioControl');
+    
+    // Set initial volume
+    audioElement.volume = 0.5;
+    
+    // Audio control button event listener
+    audioControl.addEventListener('click', toggleAudio);
+    
+    // Handle audio ended event (though we have loop, this is backup)
+    audioElement.addEventListener('ended', function() {
+        audioElement.currentTime = 0;
+        audioElement.play().catch(function(error) {
+            console.log('Audio replay failed:', error);
+        });
+    });
+    
+    // Handle audio load errors
+    audioElement.addEventListener('error', function(e) {
+        console.log('Audio load error:', e);
+        audioControl.style.display = 'none'; // Hide control if audio fails
+    });
+    
+    // Auto-start audio (will only work after user interaction due to browser policies)
+    startAudio();
+});
+
+function startAudio() {
+    // Try to start audio (may fail due to browser autoplay policies)
+    audioElement.play().then(function() {
+        isAudioPlaying = true;
+        updateAudioIcon();
+    }).catch(function(error) {
+        console.log('Autoplay prevented:', error);
+        isAudioPlaying = false;
+        updateAudioIcon();
+    });
+}
+
+function toggleAudio() {
+    if (isAudioPlaying) {
+        audioElement.pause();
+        isAudioPlaying = false;
+    } else {
+        audioElement.play().then(function() {
+            isAudioPlaying = true;
+        }).catch(function(error) {
+            console.log('Audio play failed:', error);
+        });
+    }
+    updateAudioIcon();
+}
+
+function updateAudioIcon() {
+    if (isAudioPlaying) {
+        audioIcon.className = 'fas fa-volume-up';
+        audioControl.style.background = 'rgba(255,255,255,0.2)';
+    } else {
+        audioIcon.className = 'fas fa-volume-mute';
+        audioControl.style.background = 'rgba(255,100,100,0.3)';
+    }
+}
+
+// Ensure audio starts when user interacts with dialogs
+function ensureAudioPlaying() {
+    if (!isAudioPlaying) {
+        audioElement.play().then(function() {
+            isAudioPlaying = true;
+            updateAudioIcon();
+        }).catch(function(error) {
+            console.log('Audio play failed:', error);
+        });
+    }
+}
+
+// Create floating particles
+function createParticle() {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + 'vw';
+    particle.style.width = (Math.random() * 5 + 3) + 'px';
+    particle.style.height = particle.style.width;
+    particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+    particle.style.animationDelay = Math.random() * 5 + 's';
+    
+    document.body.appendChild(particle);
+    
+    setTimeout(() => {
+        particle.remove();
+    }, 15000);
+}
+
+// Start particle system
+setInterval(createParticle, 800);
+
+function play() {
+    // Ensure audio is playing when dialogs start
+    ensureAudioPlaying();
+}         
+
+async function bukaWa(){
+    window.location = "https://www.instagram.com/p/DG432_OPKpL/?utm_source=ig_web_copy_link&igsh=MWd6OThkd2ZxYWxtZA==";
+}
+
+var today = new Date();
+var date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()+'.';
+var dateTime = date;
+
+const swals = Swal.mixin({
+    backdrop: 'rgba(0,0,50,0.3)', 
+    confirmButtonColor: '#667eea', 
+    cancelButtonColor: '#f5576c', 
+    allowOutsideClick: false
+});
+
+function createDialogConfig(title, gifNumber, step) {
+    currentStep = step; // Store current step
+    const isMobile = window.innerWidth <= 768;
+    return {
+        title: title, 
+        imageUrl: `GIF/${gifNumber}.gif`,
+        imageWidth: isMobile ? 130 : 180, 
+        imageHeight: isMobile ? 130 : 180,
+        showCancelButton: true,
+        confirmButtonColor: "#667eea",
+        cancelButtonColor: "#f5576c",
+        confirmButtonText: "TAP UNTUK LANJUT",
+        cancelButtonText: "TAK MAOK",
+        showClass: {
+            popup: `animate__animated animate__zoomIn animate__faster`
+        },
+        hideClass: {
+            popup: `animate__animated animate__zoomOut animate__faster`
+        },
+        customClass: {
+            actions: 'swal2-actions-custom'
+        },
+        didOpen: () => {
+            // Ensure audio is playing when dialog opens
+            ensureAudioPlaying();
+
+            // Reset cancel click count for each new dialog
+            cancelClickCount = 0;
+            
+            const cancelButton = Swal.getCancelButton();
+            if (cancelButton) {
+                // Remove any existing event listeners
+                cancelButton.removeEventListener('mousedown', handleCancelButtonClick);
+                cancelButton.removeEventListener('touchstart', handleCancelButtonClick);
+                
+                // Add event listener to prevent default click and move button instead
+                cancelButton.addEventListener('mousedown', handleCancelButtonClick);
+                cancelButton.addEventListener('touchstart', handleCancelButtonClick);
+            }
+        }
+    };
+}
+
+async function handleCancelButtonClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const cancelButton = Swal.getCancelButton();
+    if (!cancelButton) return;
+    
+    cancelClickCount++;
+    
+    // If clicked 5 times, allow actual exit
+    if (cancelClickCount >= 5) {
+        // Remove our custom handler to allow normal click behavior
+        cancelButton.removeEventListener('mousedown', handleCancelButtonClick);
+        cancelButton.removeEventListener('touchstart', handleCancelButtonClick);
+        
+        // Update button appearance to show it's now functional
+        cancelButton.style.background = '#28a745';
+        cancelButton.textContent = 'KELUAR SEKARANG';
+        
+        // Allow the user to stay or click to proceed to cancel message
+        // The button will now work normally and trigger the default Swal cancel behavior
+        return;
+    }
+    
+    // Move the button to a new position (for clicks 1-4)
+    const positionIndex = (cancelClickCount - 1) % buttonMovePositions.length;
+    const position = buttonMovePositions[positionIndex];
+    
+    // Apply CSS variables for the animation
+    cancelButton.style.setProperty('--move-x', position.x + 'px');
+    cancelButton.style.setProperty('--move-y', position.y + 'px');
+    
+    // Add moving class
+    cancelButton.classList.add('moving');
+    
+    // Update button text to show frustration
+    const frustratedTexts = [
+        'TIDAK BISA! 😝',
+        'COBA LAGI! 🤪', 
+        'MASIH BELUM! 😜',
+        'HAMPIR SAJA! 😂'
+    ];
+    
+    if (cancelClickCount <= frustratedTexts.length) {
+        cancelButton.textContent = frustratedTexts[cancelClickCount - 1];
+    }
+    
+    // Remove moving class after animation
+    setTimeout(() => {
+        cancelButton.classList.remove('moving');
+    }, 500);
+    
+    // Add a small shake effect to the whole popup
+    const popup = document.querySelector('.swal2-popup');
+    if (popup) {
+        popup.style.animation = 'none';
+        popup.offsetHeight; // Trigger reflow
+        popup.style.animation = 'shake 0.5s ease-in-out';
+    }
+}
+
+// Add shake animation
+const shakeStyle = document.createElement('style');
+shakeStyle.textContent = `
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+        20%, 40%, 60%, 80% { transform: translateX(2px); }
+    }
+    
+    .swal2-actions-custom .swal2-cancel {
+        transition: transform 0.5s ease;
+    }
+    
+    .swal2-actions-custom .swal2-cancel.moving {
+        transform: translate(var(--move-x, 0), var(--move-y, 0));
+    }
+`;
+document.head.appendChild(shakeStyle);
+
+async function mulai(){
+    // Reset typing variables when starting fresh
+    i = 0;
+    u = 0;
+    document.getElementById("text").innerHTML = "";
+    document.getElementById("penutup").innerHTML = "";
+    
+    try {
+        const result1 = await swals.fire(createDialogConfig("Hello Ciaaa 🤍", 1, 1));
+
+        if (result1.isConfirmed) {
+            play();
+            
+            const result2 = await swals.fire(createDialogConfig("In case no one has told you this recently...", 2, 2));
+            if (!result2.isConfirmed) {
+                const shouldRestart = await showCancelMessage(2);
+                if (shouldRestart === 'restart') {
+                    return mulai();
+                } else if (shouldRestart === 'first') {
+                    return mulai(); // Go back to first dialog
+                }
+                return;
+            }
+
+            const result3 = await swals.fire(createDialogConfig("You are doing just fine...", 3, 3));
+            if (!result3.isConfirmed) {
+                const shouldRestart = await showCancelMessage(3);
+                if (shouldRestart === 'restart') {
+                    return mulai();
+                } else if (shouldRestart === 'first') {
+                    return mulai(); // Go back to first dialog
+                }
+                return;
+            }
+
+            const result4 = await swals.fire(createDialogConfig("Believe in yourself", 4, 4));
+            if (!result4.isConfirmed) {
+                const shouldRestart = await showCancelMessage(4);
+                if (shouldRestart === 'restart') {
+                    return mulai();
+                } else if (shouldRestart === 'first') {
+                    return mulai(); // Go back to first dialog
+                }
+                return;
+            }
+
+            const result5 = await swals.fire(createDialogConfig("even when no one else does...", 5, 5));
+            if (!result5.isConfirmed) {
+                const shouldRestart = await showCancelMessage(5);
+                if (shouldRestart === 'restart') {
+                    return mulai();
+                } else if (shouldRestart === 'first') {
+                    return mulai(); // Go back to first dialog
+                }
+                return;
+            }
+
+            const result6 = await swals.fire(createDialogConfig("If someone tells you that you can't do it,", 6, 6));
+            if (!result6.isConfirmed) {
+                const shouldRestart = await showCancelMessage(6);
+                if (shouldRestart === 'restart') {
+                    return mulai();
+                } else if (shouldRestart === 'first') {
+                    return mulai(); // Go back to first dialog
+                }
+                return;
+            }
+
+            const result7 = await swals.fire(createDialogConfig("prove them wrong...🤍", 7, 7));
+            if (!result7.isConfirmed) {
+                const shouldRestart = await showCancelMessage(7);
+                if (shouldRestart === 'restart') {
+                    return mulai();
+                } else if (shouldRestart === 'first') {
+                    return mulai(); // Go back to first dialog
+                }
+                return;
+            }
+
+            const result8 = await swals.fire(createDialogConfig("Be kind towards your journey.", 8, 8));
+            if (!result8.isConfirmed) {
+                const shouldRestart = await showCancelMessage(8);
+                if (shouldRestart === 'restart') {
+                    return mulai();
+                } else if (shouldRestart === 'first') {
+                    return mulai(); // Go back to first dialog
+                }
+                return;
+            }
+
+            const result9 = await swals.fire(createDialogConfig("Be nice and give yourself some real love by keeping hate away...🤍", 9, 9));
+            if (!result9.isConfirmed) {
+                const shouldRestart = await showCancelMessage(9);
+                if (shouldRestart === 'restart') {
+                    return mulai();
+                } else if (shouldRestart === 'first') {
+                    return mulai(); // Go back to first dialog
+                }
+                return;
+            }
+
+            const result10 = await swals.fire(createDialogConfig("Take care and be safe...🤍", 5, 10));
+            if (!result10.isConfirmed) {
+                const shouldRestart = await showCancelMessage(10);
+                if (shouldRestart === 'restart') {
+                    return mulai();
+                } else if (shouldRestart === 'first') {
+                    return mulai(); // Go back to first dialog
+                }
+                return;
+            }
+
+            console.log("All dialogs completed, proceeding to next page...");
+            
+            setTimeout(() => {
+                if (typeof ketik === 'function') {
+                    ketik();
+                } else {
+                    console.warn("ketik() function not found");
+                }
+                
+                if (typeof expl === 'function') {
+                    expl();
+                } else {
+                    console.warn("expl() function not found");
+                }
+            }, 500);
+
+        } else {
+            // First dialog cancelled - show cancel message
+            const shouldRestart = await showCancelMessage(1);
+            if (shouldRestart === 'restart') {
+                return mulai();
+            } else if (shouldRestart === 'first') {
+                return mulai(); // Go back to first dialog
+            }
+        }
+    } catch (error) {
+        console.error("Error in dialog sequence:", error);
+        await swals.fire({
+            title: "Error",
+            text: "An error occurred during the dialog sequence.",
+            icon: "error",
+            confirmButtonColor: "#667eea"
+        });
+    }
+}
+
+async function showCancelMessage(step) {
+    const isMobile = window.innerWidth <= 768;
+    const result = await swals.fire({
+        title: "OH TIDAK BISA 🤪",
+        imageUrl: `GIF/12.gif`,
+        imageWidth: isMobile ? 130 : 180, 
+        imageHeight: isMobile ? 130 : 180,
+        showCancelButton: true,
+        confirmButtonColor: "#667eea",
+        cancelButtonColor: "#f5576c",
+        confirmButtonText: "COBA LAGI",
+        cancelButtonText: "KELUAR",
+        allowOutsideClick: false, // Prevent accidental closing
+        showClass: {
+            popup: `animate__animated animate__bounceIn animate__faster`
+        },
+        hideClass: {
+            popup: `animate__animated animate__fadeOut animate__faster`
+        },
+        didOpen: () => {
+            // Reset cancel click count for cancel message dialog
+            cancelClickCount = 0;
+            
+            // Remove custom event handlers for this dialog - let it work normally
+            const cancelButton = Swal.getCancelButton();
+            if (cancelButton) {
+                cancelButton.removeEventListener('mousedown', handleCancelButtonClick);
+                cancelButton.removeEventListener('touchstart', handleCancelButtonClick);
+            }
+        }
+    });
+    
+    if (result.isConfirmed) {
+        return 'restart';
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+        return 'first'; // Return to first dialog instead of exiting
+    } else {
+        return 'first'; // Handle any other dismissal as return to first
+    }
+}
+
+function tombol() {
+    document.getElementById('tomAksi').style.visibility = "visible";
+    document.getElementById('tomAksi').style.opacity = "1";
+}
+
+async function expl(){
+    document.getElementById('bodyblur').style.opacity = "1";
+    document.getElementById('bodyblur').style.visibility = "visible";
+    setTimeout(duar,300);
+}
+
+function aksifoto(){
+    var e1 = document.getElementById('animasi');
+    e1.classList.add("degdeg");
+    document.getElementById('fotoloveu').style.opacity = "1";
+    document.getElementById('fotoloveu').style.height = window.innerWidth <= 768 ? "140px" : "180px";
+    document.getElementById('fotoloveu').style.margin = window.innerWidth <= 768 ? "20px 0 0 0" : "30px 0 0 0";
+}
+
+async function duar(){
+    document.getElementById('konten').style.top = "0";
+    document.getElementById('koteks').style.opacity = "1";
+}
+
+const body = document.querySelector("body");
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "fas fa-heart";
+    heart.style.left = (Math.random() * 90)+"vw";
+    heart.style.animationDuration = (Math.random()*4)+3+"s";
+    body.appendChild(heart);
+}
+
+setInterval(function name(params) {
+    var heartArr = document.querySelectorAll(".fa-heart");
+    if (heartArr.length > 30) {
+       heartArr[0].remove();
+    }
+},100);
+
+function ketik() {
+    if(i<text.length){
+        document.getElementById("text").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(ketik,80);
+    }
+    if(i==text.length){
+        setTimeout(ketikk, 500);
+    }
+}
+
+function ketikk() {
+    if(u<penutup.length){
+        document.getElementById("penutup").innerHTML += penutup.charAt(u);
+        u++;
+        setTimeout(ketikk,150);
+    }
+    if(u==penutup.length){
+        setTimeout(() => {
+            tombol();
+            aksifoto();
+            setInterval(createHeart,400);
+        }, 300);
+    }
+}
+
+// Handle orientation changes
+window.addEventListener('orientationchange', function() {
+    setTimeout(function() {
+        location.reload();
+    }, 500);
+});
+
+mulai();
+</script>
+</body>
+</html>
