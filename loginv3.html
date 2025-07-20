@@ -503,7 +503,7 @@
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 3000,
+            timer: 4000,
             timerProgressBar: true,
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer);
@@ -520,7 +520,7 @@
                     background: 'rgba(255, 255, 255, 0.95)',
                     color: '#1a1a1a'
                 });
-            }, 1500);
+            }, 50);
         });
 
         loginForm.addEventListener('submit', function(e) {
@@ -580,9 +580,9 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Login Successful!',
-                        html: `Welcome back, <strong>${username}</strong>!<br>Redirecting to dashboard...`,
+                        html: `Welcome back 🤍, <strong>${username}</strong>!<br>Redirecting to dashboard...`,
                         showConfirmButton: false,
-                        timer: 2500,
+                        timer: 4000,
                         timerProgressBar: true,
                         customClass: {
                             popup: 'swal2-success-popup'
@@ -603,18 +603,7 @@
                     setTimeout(() => {
                         // In a real application, you would redirect here
                         window.location.href = 'mainv3.html';
-                        
-                        // For demo purposes, show another success message
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Demo Mode',
-                            text: 'In a real application, you would be redirected to the dashboard now.',
-                            confirmButtonText: 'Understand',
-                            customClass: {
-                                confirmButton: 'swal2-confirm'
-                            }
-                        });
-                    }, 2500);
+                    }, 4000);
                 } else {
                     // Error handling with enhanced feedback
                     Swal.fire({
@@ -642,9 +631,9 @@
                             icon: 'question',
                             title: 'Need help? Click "Tap untuk user & pass" below',
                         });
-                    }, 1000);
+                    }, 4000);
                 }
-            }, 1200);
+            }, 1000);
         });
 
         function shakeContainer() {
@@ -709,58 +698,6 @@
                 }
             });
         }
-
-        // Enhanced input interactions with SweetAlert2 feedback
-        const inputs = document.querySelectorAll('input');
-        inputs.forEach((input, index) => {
-            // Staggered animation delay
-            input.parentElement.style.animationDelay = `${0.4 + index * 0.2}s`;
-            
-            input.addEventListener('focus', function() {
-                this.parentElement.style.transform = 'scale(1.01)';
-                this.parentElement.style.zIndex = '10';
-            });
-            
-            input.addEventListener('blur', function() {
-                this.parentElement.style.transform = 'scale(1)';
-                this.parentElement.style.zIndex = '1';
-            });
-
-            // Real-time validation feedback with subtle notifications
-            input.addEventListener('input', function() {
-                if (this.value.length > 0) {
-                    this.style.borderColor = '#e8f5e8';
-                } else {
-                    this.style.borderColor = '#f0f0f0';
-                }
-                
-                // Show password strength indicator
-                if (this.type === 'password' && this.value.length > 0) {
-                    const strength = getPasswordStrength(this.value);
-                    if (strength === 'weak' && this.value.length > 3) {
-                        // Only show once per session
-                        if (!window.passwordHintShown) {
-                            setTimeout(() => {
-                                Toast.fire({
-                                    icon: 'info',
-                                    title: 'Tip: Use a stronger password in real applications',
-                                    timer: 2000
-                                });
-                            }, 1000);
-                            window.passwordHintShown = true;
-                        }
-                    }
-                }
-            });
-        });
-
-        // Simple password strength checker
-        function getPasswordStrength(password) {
-            if (password.length < 6) return 'weak';
-            if (password.length < 10) return 'medium';
-            return 'strong';
-        }
-
         // Enhanced viewport handling
         function handleViewportChange() {
             const vh = window.innerHeight * 0.01;

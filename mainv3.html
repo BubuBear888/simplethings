@@ -11,13 +11,11 @@
 <script src="https://kit.fontawesome.com/4f3ce16e3e.js" crossorigin="anonymous"></script>
 
 <body>
-<!-- Audio element for background music -->
 <audio id="backgroundAudio" loop preload="auto" style="display: none;">
     <source src="pizza.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
 
-<!-- Audio control button -->
 <div id="audioControl" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.3);">
     <i id="audioIcon" class="fas fa-volume-up" style="color: white; font-size: 20px;"></i>
 </div>
@@ -596,8 +594,8 @@ var i=0,text;
 text = "One day all of your dreams will come true. You will get through it. Keep Going. You're Worth it. The world is a kinder place because you are in it";
 var u=0,penutup;
 penutup = "SEMANGAT";
-var cancelClickCount = 0; // Track how many times cancel button is clicked
-var currentStep = 1; // Track current dialog step
+var cancelClickCount = 0;
+var currentStep = 1; 
 var buttonMovePositions = [
     {x: 50, y: -30},
     {x: -60, y: 20},
@@ -611,25 +609,24 @@ var buttonMovePositions = [
     {x: -70, y: 50}
 ];
 
-// Audio control variables
+
 var audioElement = null;
 var isAudioPlaying = false;
 var audioIcon = null;
 var audioControl = null;
 
-// Initialize audio on page load
+
 window.addEventListener('DOMContentLoaded', function() {
     audioElement = document.getElementById('backgroundAudio');
     audioIcon = document.getElementById('audioIcon');
     audioControl = document.getElementById('audioControl');
     
-    // Set initial volume
+
     audioElement.volume = 0.5;
     
-    // Audio control button event listener
+
     audioControl.addEventListener('click', toggleAudio);
     
-    // Handle audio ended event (though we have loop, this is backup)
     audioElement.addEventListener('ended', function() {
         audioElement.currentTime = 0;
         audioElement.play().catch(function(error) {
@@ -637,18 +634,16 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Handle audio load errors
+
     audioElement.addEventListener('error', function(e) {
         console.log('Audio load error:', e);
-        audioControl.style.display = 'none'; // Hide control if audio fails
+        audioControl.style.display = 'none'; 
     });
-    
-    // Auto-start audio (will only work after user interaction due to browser policies)
+
     startAudio();
 });
 
 function startAudio() {
-    // Try to start audio (may fail due to browser autoplay policies)
     audioElement.play().then(function() {
         isAudioPlaying = true;
         updateAudioIcon();
@@ -683,7 +678,7 @@ function updateAudioIcon() {
     }
 }
 
-// Ensure audio starts when user interacts with dialogs
+
 function ensureAudioPlaying() {
     if (!isAudioPlaying) {
         audioElement.play().then(function() {
@@ -695,7 +690,6 @@ function ensureAudioPlaying() {
     }
 }
 
-// Create floating particles
 function createParticle() {
     const particle = document.createElement('div');
     particle.className = 'particle';
@@ -712,11 +706,10 @@ function createParticle() {
     }, 15000);
 }
 
-// Start particle system
+
 setInterval(createParticle, 800);
 
 function play() {
-    // Ensure audio is playing when dialogs start
     ensureAudioPlaying();
 }         
 
@@ -736,7 +729,7 @@ const swals = Swal.mixin({
 });
 
 function createDialogConfig(title, gifNumber, step) {
-    currentStep = step; // Store current step
+    currentStep = step;
     const isMobile = window.innerWidth <= 768;
     return {
         title: title, 
@@ -758,19 +751,17 @@ function createDialogConfig(title, gifNumber, step) {
             actions: 'swal2-actions-custom'
         },
         didOpen: () => {
-            // Ensure audio is playing when dialog opens
+
             ensureAudioPlaying();
 
-            // Reset cancel click count for each new dialog
+
             cancelClickCount = 0;
             
             const cancelButton = Swal.getCancelButton();
             if (cancelButton) {
-                // Remove any existing event listeners
                 cancelButton.removeEventListener('mousedown', handleCancelButtonClick);
                 cancelButton.removeEventListener('touchstart', handleCancelButtonClick);
                 
-                // Add event listener to prevent default click and move button instead
                 cancelButton.addEventListener('mousedown', handleCancelButtonClick);
                 cancelButton.addEventListener('touchstart', handleCancelButtonClick);
             }
@@ -787,33 +778,24 @@ async function handleCancelButtonClick(event) {
     
     cancelClickCount++;
     
-    // If clicked 5 times, allow actual exit
+
     if (cancelClickCount >= 5) {
-        // Remove our custom handler to allow normal click behavior
         cancelButton.removeEventListener('mousedown', handleCancelButtonClick);
         cancelButton.removeEventListener('touchstart', handleCancelButtonClick);
         
-        // Update button appearance to show it's now functional
         cancelButton.style.background = '#28a745';
         cancelButton.textContent = 'KELUAR SEKARANG';
         
-        // Allow the user to stay or click to proceed to cancel message
-        // The button will now work normally and trigger the default Swal cancel behavior
         return;
     }
-    
-    // Move the button to a new position (for clicks 1-4)
     const positionIndex = (cancelClickCount - 1) % buttonMovePositions.length;
     const position = buttonMovePositions[positionIndex];
     
-    // Apply CSS variables for the animation
     cancelButton.style.setProperty('--move-x', position.x + 'px');
     cancelButton.style.setProperty('--move-y', position.y + 'px');
     
-    // Add moving class
     cancelButton.classList.add('moving');
     
-    // Update button text to show frustration
     const frustratedTexts = [
         'TIDAK BISA! 😝',
         'COBA LAGI! 🤪', 
@@ -824,22 +806,19 @@ async function handleCancelButtonClick(event) {
     if (cancelClickCount <= frustratedTexts.length) {
         cancelButton.textContent = frustratedTexts[cancelClickCount - 1];
     }
-    
-    // Remove moving class after animation
+
     setTimeout(() => {
         cancelButton.classList.remove('moving');
     }, 500);
-    
-    // Add a small shake effect to the whole popup
+
     const popup = document.querySelector('.swal2-popup');
     if (popup) {
         popup.style.animation = 'none';
-        popup.offsetHeight; // Trigger reflow
+        popup.offsetHeight;
         popup.style.animation = 'shake 0.5s ease-in-out';
     }
 }
 
-// Add shake animation
 const shakeStyle = document.createElement('style');
 shakeStyle.textContent = `
     @keyframes shake {
@@ -859,7 +838,6 @@ shakeStyle.textContent = `
 document.head.appendChild(shakeStyle);
 
 async function mulai(){
-    // Reset typing variables when starting fresh
     i = 0;
     u = 0;
     document.getElementById("text").innerHTML = "";
@@ -877,7 +855,7 @@ async function mulai(){
                 if (shouldRestart === 'restart') {
                     return mulai();
                 } else if (shouldRestart === 'first') {
-                    return mulai(); // Go back to first dialog
+                    return mulai(); 
                 }
                 return;
             }
@@ -888,7 +866,7 @@ async function mulai(){
                 if (shouldRestart === 'restart') {
                     return mulai();
                 } else if (shouldRestart === 'first') {
-                    return mulai(); // Go back to first dialog
+                    return mulai(); 
                 }
                 return;
             }
@@ -899,7 +877,7 @@ async function mulai(){
                 if (shouldRestart === 'restart') {
                     return mulai();
                 } else if (shouldRestart === 'first') {
-                    return mulai(); // Go back to first dialog
+                    return mulai(); 
                 }
                 return;
             }
@@ -910,7 +888,7 @@ async function mulai(){
                 if (shouldRestart === 'restart') {
                     return mulai();
                 } else if (shouldRestart === 'first') {
-                    return mulai(); // Go back to first dialog
+                    return mulai(); 
                 }
                 return;
             }
@@ -921,7 +899,7 @@ async function mulai(){
                 if (shouldRestart === 'restart') {
                     return mulai();
                 } else if (shouldRestart === 'first') {
-                    return mulai(); // Go back to first dialog
+                    return mulai(); 
                 }
                 return;
             }
@@ -932,7 +910,7 @@ async function mulai(){
                 if (shouldRestart === 'restart') {
                     return mulai();
                 } else if (shouldRestart === 'first') {
-                    return mulai(); // Go back to first dialog
+                    return mulai(); 
                 }
                 return;
             }
@@ -943,7 +921,7 @@ async function mulai(){
                 if (shouldRestart === 'restart') {
                     return mulai();
                 } else if (shouldRestart === 'first') {
-                    return mulai(); // Go back to first dialog
+                    return mulai(); 
                 }
                 return;
             }
@@ -954,18 +932,18 @@ async function mulai(){
                 if (shouldRestart === 'restart') {
                     return mulai();
                 } else if (shouldRestart === 'first') {
-                    return mulai(); // Go back to first dialog
+                    return mulai(); 
                 }
                 return;
             }
 
-            const result10 = await swals.fire(createDialogConfig("Take care and be safe...🤍", 5, 10));
+            const result10 = await swals.fire(createDialogConfig("Take care and be safe...🤍", 10, 10));
             if (!result10.isConfirmed) {
                 const shouldRestart = await showCancelMessage(10);
                 if (shouldRestart === 'restart') {
                     return mulai();
                 } else if (shouldRestart === 'first') {
-                    return mulai(); // Go back to first dialog
+                    return mulai(); 
                 }
                 return;
             }
@@ -987,12 +965,12 @@ async function mulai(){
             }, 500);
 
         } else {
-            // First dialog cancelled - show cancel message
+
             const shouldRestart = await showCancelMessage(1);
             if (shouldRestart === 'restart') {
                 return mulai();
             } else if (shouldRestart === 'first') {
-                return mulai(); // Go back to first dialog
+                return mulai(); 
             }
         }
     } catch (error) {
@@ -1018,7 +996,7 @@ async function showCancelMessage(step) {
         cancelButtonColor: "#f5576c",
         confirmButtonText: "COBA LAGI",
         cancelButtonText: "KELUAR",
-        allowOutsideClick: false, // Prevent accidental closing
+        allowOutsideClick: false, 
         showClass: {
             popup: `animate__animated animate__bounceIn animate__faster`
         },
@@ -1026,10 +1004,9 @@ async function showCancelMessage(step) {
             popup: `animate__animated animate__fadeOut animate__faster`
         },
         didOpen: () => {
-            // Reset cancel click count for cancel message dialog
+
             cancelClickCount = 0;
             
-            // Remove custom event handlers for this dialog - let it work normally
             const cancelButton = Swal.getCancelButton();
             if (cancelButton) {
                 cancelButton.removeEventListener('mousedown', handleCancelButtonClick);
@@ -1041,9 +1018,9 @@ async function showCancelMessage(step) {
     if (result.isConfirmed) {
         return 'restart';
     } else if (result.dismiss === Swal.DismissReason.cancel) {
-        return 'first'; // Return to first dialog instead of exiting
+        return 'first'; 
     } else {
-        return 'first'; // Handle any other dismissal as return to first
+        return 'first'; 
     }
 }
 
@@ -1091,10 +1068,10 @@ function ketik() {
     if(i<text.length){
         document.getElementById("text").innerHTML += text.charAt(i);
         i++;
-        setTimeout(ketik,80);
+        setTimeout(ketik,100); 
     }
     if(i==text.length){
-        setTimeout(ketikk, 500);
+        setTimeout(ketikk, 100); 
     }
 }
 
@@ -1102,18 +1079,17 @@ function ketikk() {
     if(u<penutup.length){
         document.getElementById("penutup").innerHTML += penutup.charAt(u);
         u++;
-        setTimeout(ketikk,150);
+        setTimeout(ketikk, 400); 
     }
     if(u==penutup.length){
         setTimeout(() => {
             tombol();
             aksifoto();
-            setInterval(createHeart,400);
-        }, 300);
+            setInterval(createHeart,400); 
+        }, 1);
     }
 }
 
-// Handle orientation changes
 window.addEventListener('orientationchange', function() {
     setTimeout(function() {
         location.reload();
