@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elegant Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- SweetAlert2 CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.1/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.1/sweetalert2.min.css">
     <style>
@@ -489,7 +488,6 @@
     </div>
 
     <script>
-        // Simple user credentials (in a real app, this would be handled by a backend)
         const validUsers = {
             'ciaaa': 'silvi.wjl',
         };
@@ -497,8 +495,6 @@
         const loginForm = document.getElementById('loginForm');
         const loginContainer = document.querySelector('.login-container');
         const loginBtn = document.querySelector('.login-btn');
-
-        // Enhanced SweetAlert2 configuration
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -511,7 +507,6 @@
             }
         });
 
-        // Welcome message when page loads
         window.addEventListener('load', () => {
             setTimeout(() => {
                 Toast.fire({
@@ -529,11 +524,9 @@
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
             
-            // Add loading state
             loginBtn.classList.add('loading');
             loginBtn.disabled = true;
             
-            // Show loading toast
             const loadingToast = Swal.fire({
                 title: 'Signing you in...',
                 html: 'Please wait while we verify your credentials',
@@ -547,7 +540,6 @@
                 }
             });
             
-            // Simple validation
             if (!username || !password) {
                 setTimeout(() => {
                     loginBtn.classList.remove('loading');
@@ -568,15 +560,12 @@
                 return;
             }
             
-            // Simulate API call delay
             setTimeout(() => {
                 loginBtn.classList.remove('loading');
                 loginBtn.disabled = false;
                 loadingToast.close();
                 
-                // Check credentials
                 if (validUsers[username] && validUsers[username] === password) {
-                    // Success animation and message
                     Swal.fire({
                         icon: 'success',
                         title: 'Login Successful!',
@@ -588,24 +577,22 @@
                             popup: 'swal2-success-popup'
                         },
                         didOpen: () => {
-                            // Add confetti effect
+
                             const popup = Swal.getPopup();
                             popup.style.animation = 'pulse 0.5s ease-in-out';
                         }
                     });
                     
-                    // Store user info for the next page
-                    // Note: Using variables instead of sessionStorage for Claude.ai compatibility
+
                     window.loggedInUser = username;
                     window.loginTime = new Date().toISOString();
                     
-                    // Redirect after successful login
+
                     setTimeout(() => {
-                        // In a real application, you would redirect here
-                        window.location.href = 'mainv4.html';
+
+                        window.location.href = 'mainv3.html';
                     }, 4000);
                 } else {
-                    // Error handling with enhanced feedback
                     Swal.fire({
                         icon: 'error',
                         title: 'Authentication Failed',
@@ -615,17 +602,15 @@
                             confirmButton: 'swal2-confirm'
                         },
                         didClose: () => {
-                            // Focus back to username field
                             document.getElementById('username').focus();
                         }
                     });
                     
                     shakeContainer();
                     
-                    // Clear password field for security
+
                     document.getElementById('password').value = '';
                     
-                    // Show additional help toast
                     setTimeout(() => {
                         Toast.fire({
                             icon: 'question',
@@ -667,11 +652,11 @@
                 }
             }).then((result) => {
                 if (result.dismiss === Swal.DismissReason.cancel) {
-                    // Auto-fill the credentials
+
                     document.getElementById('username').value = 'ciaaa';
                     document.getElementById('password').value = 'silvi.wjl';
                     
-                    // Trigger the label animations
+
                     document.getElementById('username').dispatchEvent(new Event('input'));
                     document.getElementById('password').dispatchEvent(new Event('input'));
                     
@@ -681,7 +666,7 @@
                         timer: 4000
                     });
                 } else if (result.isConfirmed) {
-                    // Copy credentials to clipboard
+
                     if (navigator.clipboard) {
                         navigator.clipboard.writeText('Username: ciaaa\nPassword: silvi.wjl').then(() => {
                             Toast.fire({
@@ -698,7 +683,7 @@
                 }
             });
         }
-        // Enhanced viewport handling
+
         function handleViewportChange() {
             const vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -708,14 +693,14 @@
         window.addEventListener('orientationchange', handleViewportChange);
         handleViewportChange();
 
-        // Keyboard navigation enhancement with SweetAlert2
+
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && e.target.tagName !== 'BUTTON' && !Swal.isVisible()) {
                 e.preventDefault();
                 loginForm.dispatchEvent(new Event('submit'));
             }
             
-            // Easter egg: Konami code
+
             window.konamiSequence = window.konamiSequence || [];
             const konami = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
             window.konamiSequence.push(e.key);
@@ -738,12 +723,12 @@
             }
         });
 
-        // Progressive enhancement for modern browsers
+
         if (CSS.supports('backdrop-filter', 'blur(20px)')) {
             loginContainer.style.backdropFilter = 'blur(20px)';
         }
 
-        // Connection status monitoring
+
         window.addEventListener('online', () => {
             Toast.fire({
                 icon: 'success',
